@@ -14,7 +14,7 @@ const Task = mongoose.model("Task", {
 
 mongoose.connect("mongodb://127.0.0.1:27017/tpMongoDSP");
 
-let test = new Task({title: "Hello World"});
+let test = new Task({title: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)});
 test.save().then(() => {
     console.log("ok");
 }).catch(() => {
@@ -38,8 +38,26 @@ app.get("/api/task/:id", (req,res) => {
     })
 });
 
-app.post("/api/task", (req,res) => {
-    res.end();
+app.post("/api/task", await (req,res) => {
+    console.log("entré dans le post")
+    console.log(req);
+    const title = req.body.title;
+    const content = req.body.content;
+
+    if (!title || !content) {
+        res.send('Il manque un argument')
+        return;
+    }
+    console.log(title);
+    console.log(content);
+    const new_task = new Tasks({
+        title: title,
+        content: content
+    })
+
+    await new_task.save();
+    res.json(new_task);
+    return;
 });
 
 app.put("/api/task", (req,res) => {
@@ -48,12 +66,15 @@ app.put("/api/task", (req,res) => {
 app.patch("/api/task", (req,res) => {
     res.end();
 });
-app.delete("/api/task/delete/:id", async (req,res) => {
+app.delete("/api/task/remove/:id", async(req,res) => {
     const id = req.params.id;
-    console.log("api delete");
-    console.log(req.params);
-    const suppr = await Tasks.deleteOne({ _id: id })
-    res.json(suppr);
+    Task.findOne({_id: req.params.id})
+        .then(task => {
+            Task.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+          .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
 });
 app.listen(3000, () => {
     console.log("Le serveur tourne sur le port 3000");

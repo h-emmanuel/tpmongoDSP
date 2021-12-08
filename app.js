@@ -1,7 +1,9 @@
 function deleteTask(event){
     console.log(event.target);
     element = document.getElementById("div_"+event.target.id);
-    fetch('http://127.0.0.1:3000/api/task/delete/'+event.target.id)
+    fetch('http://127.0.0.1:3000/api/task/remove/'+event.target.id, {
+        method:"DELETE"
+    })
     .then(response => {
         return response.json();
     })

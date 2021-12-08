@@ -21,6 +21,16 @@
 			</nav>
 		</div>
 		<br>
+		<div class="container" id="addTask">
+			<form action="/api/task" method="post">
+				<label for="taskTitle">Titre</label>
+				<input type="text" name="taskTitle" placeholder="Entrer une nouvelle tache" class="form-control">
+				<label for="taskTitle">Description</label>
+				<input type="text" name="taskDescription" placeholder="Entrer une nouvelle tache" class="form-control">
+				<input type="submit" value="Ajouter" class="form-control">
+			</form>
+		</div>
+		<br>
 		<div class="container" id="taskContainer"></div>
 		<script src="app.js"></script>
 		<script>
