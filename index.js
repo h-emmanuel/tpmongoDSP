@@ -21,6 +21,7 @@ test.save().then(() => {
     console.log("ko");
 })
 app.use(express.static("public"));
+app.use(express.json);
 app.use(cors())
 app.get("/api/task", (req,res) => {
     Task.find().then((tasks) => {
@@ -38,26 +39,25 @@ app.get("/api/task/:id", (req,res) => {
     })
 });
 
-app.post("/api/task", await (req,res) => {
-    console.log("entré dans le post")
-    console.log(req);
-    const title = req.body.title;
-    const content = req.body.content;
-
-    if (!title || !content) {
-        res.send('Il manque un argument')
-        return;
-    }
-    console.log(title);
-    console.log(content);
-    const new_task = new Tasks({
-        title: title,
-        content: content
-    })
-
-    await new_task.save();
-    res.json(new_task);
-    return;
+app.post("/api/task", (req,res) => {
+    console.log(req.body);
+    const task = new Task({
+        title: req.body.title,
+        description: req.body.description,
+      });
+      task.save().then(
+        () => {
+          res.status(201).json({
+            message: 'Post saved successfully!'
+          });
+        }
+      ).catch(
+        (error) => {
+          res.status(400).json({
+            error: error
+          });
+        }
+      );
 });
 
 app.put("/api/task", (req,res) => {

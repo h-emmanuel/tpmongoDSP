@@ -22,11 +22,11 @@
 		</div>
 		<br>
 		<div class="container" id="addTask">
-			<form action="/api/task" method="post">
+			<form action="/api/task" method="post" id="formAddTask">
 				<label for="taskTitle">Titre</label>
-				<input type="text" name="taskTitle" placeholder="Entrer une nouvelle tache" class="form-control">
+				<input type="text" name="taskTitle" id="taskTitle" placeholder="Entrer une nouvelle tache" class="form-control">
 				<label for="taskTitle">Description</label>
-				<input type="text" name="taskDescription" placeholder="Entrer une nouvelle tache" class="form-control">
+				<input type="text" name="taskDescription" id="taskDescription" placeholder="Entrer une nouvelle tache" class="form-control">
 				<input type="submit" value="Ajouter" class="form-control">
 			</form>
 		</div>
